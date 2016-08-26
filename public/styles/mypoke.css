@@ -10,21 +10,21 @@ body {
   position: absolute;
   width: 100%;
   bottom: 20px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
 }
 
 #search {
   /*border: 1px solid #f00;*/
+  cursor: pointer;
   font-family: sans-serif;
-  box-shadow: 0 0 2px rgba(0,0,0,0.4);
-  background-color: #fff;
-  margin: auto;
-  border-radius: 4px;
-  padding: 10px 20px;
-  font-size: 18px;
-  color: #666;
-  font-weight: bold;
+  box-shadow: 0 0 4px rgba(0,0,0,0.4);
+  background-color: #ffc;
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
   z-index: 1000;
   pointer-events: auto;
 }
