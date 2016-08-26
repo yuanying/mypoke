@@ -26,6 +26,7 @@ body {
   color: #666;
   font-weight: bold;
   z-index: 1000;
+  pointer-events: auto;
 }
 #search.disabled {
   color: #999;
