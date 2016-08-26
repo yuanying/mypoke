@@ -16,6 +16,9 @@ io.on('connection', (socket) => {
   socket.on('search', (coords) => {
     PokeGoSearch.emit('search', coords);
   });
+  socket.on('stop', (stop) => {
+    PokeGoSearch.emit('stop', stop);
+  });
   let sendPokemons = function(pokemons) {
     socket.emit('pokemons', pokemons);
   };

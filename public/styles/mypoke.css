@@ -60,3 +60,8 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+#current.active {
+  transition: 0.5s;
+  background-color: #999;
+}

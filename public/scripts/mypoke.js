@@ -10,8 +10,12 @@ function initialize() {
 
   var socket = io.connect();
   $('#search').click(function() {
-    var center = map.getCenter();
-    socket.emit('search', { latitude: center.lat(), longitude: center.lng() });
+    if ($('#search').hasClass('blink')) {
+      socket.emit('stop', null);
+    } else {
+      var center = map.getCenter();
+      socket.emit('search', { latitude: center.lat(), longitude: center.lng() });
+    }
   });
 
   socket.on('searching', function(status) {
@@ -24,6 +28,8 @@ function initialize() {
 
   $('#current').click(function() {
     if (navigator.geolocation) {
+      $('#current').addClass('active');
+      setTimeout(function() {$('#current').removeClass('active');}, 1000);
       navigator.geolocation.getCurrentPosition(
         function(position) {
           latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
@@ -44,6 +50,7 @@ function initialize() {
   }, 5000);
 
   // fetch first pokemons
+  socket.emit('search', null);
   setInterval(function() {
     socket.emit('search', null);
   }, 5000);
