@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MyPoke</title>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC4RVFdBX8JGZ5dSzlXjBjSJKmETSQmLk8">
+    </script>
+    <!-- <script src="https://cdn.socket.io/socket.io-1.4.8.js"></script> -->
+    <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="./scripts/pokemons.js" type="text/javascript"></script>
+    <script src="./scripts/mypoke.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="styles/mypoke.css">
+  </head>
+  <body onload="initialize();">
+    <div id="mypoke">
+
+    </div>
+    <div id="searchDiv">
+      <a href='#' id='search'>Search</a>
+    </div>
+  </body>
+</html>
