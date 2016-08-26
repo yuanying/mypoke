@@ -17,18 +17,27 @@ function initialize() {
       socket.emit('search', { latitude: center.lat(), longitude: center.lng() });
       setTimeout(function() {
         $('#search').removeClass('disabled');
-      }, 30000);  
+      }, 30000);
     }
   });
+
+  setInterval(function() {
+    $.each(encounterIds, function(eid, pokemon) {
+      if (Date.now() > pokemon.raw.expiration_time) {
+        console.log("pokemon was deleted by cleaner")
+        pokemon.marker.setMap(null);
+        delete encounterIds[eid];
+      }
+    });
+  }, 5000);
 
   socket.on('pokemons', function(pokes) {
     $.each(pokes, function(eid, rawPokemon) {
       var pokemon = pokemons[rawPokemon.pokemon_id.toString()];
+      pokemon.raw = rawPokemon;
       console.log(eid);
-      console.log(rawPokemon);
       console.log(pokemon);
       if (!encounterIds[eid]) {
-        encounterIds[eid] = true;
         var latlng = new google.maps.LatLng(rawPokemon.lat ,rawPokemon.lng);
         var image = {
           url : pokemon.img,
@@ -41,6 +50,7 @@ function initialize() {
           title: pokemon.ja
         };
         var marker = new google.maps.Marker(mopts);
+        pokemon.marker = marker;
         var vanishDate = new Date(rawPokemon.expiration_time);
         var content = "Name: " + pokemon.ja + "<br>" + "Vanished: " + vanishDate.toLocaleString();
         var infowindow = new google.maps.InfoWindow({
@@ -53,6 +63,7 @@ function initialize() {
         setTimeout(function() {
           marker.setMap(null);
         }, rawPokemon.expiration_time - Date.now());
+        encounterIds[eid] = pokemon;
       }
     })
   });
