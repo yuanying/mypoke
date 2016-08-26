@@ -16,8 +16,13 @@ io.on('connection', (socket) => {
   socket.on('search', (coords) => {
     PokeGoSearch.emit('search', coords);
   });
-  PokeGoSearch.on('pokemons', (pokemons) => {
+  let emitToSocket = function(pokemons) {
     socket.emit('pokemons', pokemons);
+  };
+  PokeGoSearch.on('pokemons', emitToSocket);
+  socket.on('disconnect', function () {
+    console.log('disconnected');
+    PokeGoSearch.removeListener('pokemons', emitToSocket);
   });
 });
 
