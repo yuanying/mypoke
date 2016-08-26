@@ -32,9 +32,9 @@ function initialize() {
   }, 5000);
 
   // fetch first pokemons
-  setTimeout(function() {
+  setInterval(function() {
     socket.emit('search', null);
-  }, 1000);
+  }, 5000);
 
   socket.on('pokemons', function(pokes) {
     $.each(pokes, function(eid, rawPokemon) {
