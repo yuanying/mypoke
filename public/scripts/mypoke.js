@@ -31,6 +31,11 @@ function initialize() {
     });
   }, 5000);
 
+  // fetch first pokemons
+  setTimeout(function() {
+    socket.emit('search', null);
+  }, 1000);
+
   socket.on('pokemons', function(pokes) {
     $.each(pokes, function(eid, rawPokemon) {
       var pokemon = pokemons[rawPokemon.pokemon_id.toString()];
