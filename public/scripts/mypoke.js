@@ -62,7 +62,12 @@ function initialize() {
           content: content
         });
         marker.addListener('click', function() {
-          infowindow.open(map, marker);
+          var map = infowindow.getMap();
+          if (map !== null && typeof map !== "undefined") {
+            infowindow.close();
+          } else {
+            infowindow.open(map, marker);
+          }
         });
         console.log(rawPokemon.expiration_time - Date.now())
         setTimeout(function() {
