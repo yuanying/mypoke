@@ -7,6 +7,14 @@ function initialize() {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("mypoke"), opts);
+  var circle = new google.maps.Circle({
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35,
+    radius: 50
+  });
 
   var socket = io.connect();
   $('#search').click(function() {
@@ -19,10 +27,13 @@ function initialize() {
   });
 
   socket.on('searching', function(status) {
-    if (status == 'start') {
-      $('#search').addClass('blink');
-    } else {
+    if (status == 'stop') {
       $('#search').removeClass('blink');
+      circle.setMap(null);
+    } else {
+      $('#search').addClass('blink');
+      circle.setCenter({lat: status.latitude, lng: status.longitude});
+      circle.setMap(map);
     }
   });
 
