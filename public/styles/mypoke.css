@@ -28,9 +28,19 @@ body {
   z-index: 1000;
   pointer-events: auto;
 }
-#search.disabled {
-  color: #999;
-  background-color: #ccc;
+
+#search.blink {
+  animation: switchback 1s infinite alternate;
+}
+@keyframes switchback {
+  from {
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    background-color: #fcc;
+  }
+  to {
+    box-shadow: 0 0 6px rgba(0,0,0,1);
+    background-color: #f99;
+  }
 }
 
 #current {

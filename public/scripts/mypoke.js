@@ -10,13 +10,15 @@ function initialize() {
 
   var socket = io.connect();
   $('#search').click(function() {
-    if(!$('#search').hasClass('disabled')) {
-      $('#search').addClass('disabled');
-      var center = map.getCenter();
-      socket.emit('search', { latitude: center.lat(), longitude: center.lng() });
-      setTimeout(function() {
-        $('#search').removeClass('disabled');
-      }, 30000);
+    var center = map.getCenter();
+    socket.emit('search', { latitude: center.lat(), longitude: center.lng() });
+  });
+
+  socket.on('searching', function(status) {
+    if (status == 'start') {
+      $('#search').addClass('blink');
+    } else {
+      $('#search').removeClass('blink');
     }
   });
 
