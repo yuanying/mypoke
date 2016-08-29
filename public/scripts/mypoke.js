@@ -36,7 +36,7 @@ function initialize() {
   var socket = io.connect();
   $('#search').click(function() {
     if ($('#search').hasClass('blink')) {
-      socket.emit('stop', null);
+      socket.emit('search', null);
     } else {
       var center = map.getCenter();
       socket.emit('search', { latitude: center.lat(), longitude: center.lng() });
@@ -78,9 +78,9 @@ function initialize() {
   }, 5000);
 
   // fetch first pokemons
-  socket.emit('search', null);
+  socket.emit('search', 'cache');
   setInterval(function() {
-    socket.emit('search', null);
+    socket.emit('search', 'cache');
   }, 5000);
 
   socket.on('pokemons', function(pokes) {

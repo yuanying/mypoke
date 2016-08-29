@@ -1,6 +1,6 @@
 'use strict';
 
-const PokeGoSearch = require('./lib/pokemon')(
+const PokeGoSearch = require('./lib/mypoke')(
   process.env.POKE_USERNAME,
   process.env.POKE_PASSWORD,
   process.env.POKE_PROVIDER
