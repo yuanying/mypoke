@@ -1,12 +1,29 @@
 function initialize() {
   var encounterIds = {};
   var latlng = new google.maps.LatLng(35.643757,139.826647);
+  if (localStorage) {
+    var lat = parseFloat(localStorage.getItem('lat'));
+    var lng = parseFloat(localStorage.getItem('lng'));
+    if (lat && lng) {
+      console.log('latlng');
+      latlng = new google.maps.LatLng(lat,lng);
+      console.log(latlng);
+    }
+  }
   var opts = {
     zoom: 18,
     center: latlng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("mypoke"), opts);
+  map.addListener('center_changed', function() {
+    //console.log(map.getCenter());
+    if(localStorage) {
+      var center = map.getCenter();
+      localStorage.setItem('lat', center.lat().toString());
+      localStorage.setItem('lng', center.lng().toString());
+    }
+  });
   var circle = new google.maps.Circle({
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
