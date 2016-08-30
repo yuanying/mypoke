@@ -4,6 +4,17 @@ function initialize() {
   var latlng = new google.maps.LatLng(35.643757,139.826647);
   var zoom = 18;
   var client = 'bulbasaur';
+  var clients = {
+    'bulbasaur': {
+      'status': 'stop'
+    },
+    'charmander': {
+      'status': 'stop'
+    },
+    'squirtle': {
+      'status': 'stop'
+    }
+  }
   var circles = {
     'bulbasaur': new google.maps.Circle({
       strokeColor: '#00FF00',
@@ -67,6 +78,14 @@ function initialize() {
       localStorage.setItem('zoom', map.getZoom().toString());
     }
   });
+
+  var drawSearchButton = function() {
+    if (clients[client]['status'] == 'stop') {
+      $('#search').removeClass('blink');
+    } else {
+      $('#search').addClass('blink');
+    }
+  };
   var clientActive = function(active) {
     ['charmander', 'squirtle', 'bulbasaur'].forEach(function(value){
       if (value != active) {
@@ -77,13 +96,16 @@ function initialize() {
     client = active;
     localStorage.setItem('client', client);
     socket.emit('client', active);
+    drawSearchButton();
   };
   clientActive(client);
 
   $('#search').click(function() {
-    if ($('#search').hasClass('blink')) {
+    if (clients[client]['status'] != 'stop') {
+      $('#search').removeClass('blink');
       socket.emit('search', null);
     } else {
+      $('#search').addClass('blink');
       var center = map.getCenter();
       socket.emit('search', { latitude: center.lat(), longitude: center.lng() });
     }
@@ -92,15 +114,10 @@ function initialize() {
   socket.on('searching', function(status) {
     var _client = status['client'];
     console.log('searching: ' + _client);
-    var status = status['status'];
+    status = status['status'];
+    clients[_client]['status'] = status;
+    drawSearchButton();
     var circle = circles[_client];
-    if (client == _client) {
-      if (status == 'stop') {
-        $('#search').removeClass('blink');
-      } else {
-        $('#search').addClass('blink');
-      }
-    }
     if (status == 'stop') {
       circle.setMap(null);
     } else {
