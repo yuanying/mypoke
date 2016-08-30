@@ -43,25 +43,49 @@ body {
   }
 }
 
-#current {
+#current,
+.client {
   cursor: pointer;
   text-align: center;
   z-index: 1001;
   position: absolute;
-  top: 10px;
   right: 10px;
   width: 32px;
   height: 32px;
-  /*border: 2px solid #333;*/
   border-radius: 16px;
   box-shadow: 0 0 2px rgba(0,0,0,0.4);
-  background-color: #fcc;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+#current {
+  top: 10px;
+  /*border: 2px solid #333;*/
+  background-color: #fcc;
+}
+
 #current.active {
   transition: 0.5s;
   background-color: #999;
+}
+
+.client {
+  top: 52px;
+  display: none;
+}
+.client.active {
+  display: flex;
+}
+#bulbasaur {
+  transition: 0.5s;
+  background-color: #cfc;
+}
+#charmander {
+  transition: 0.5s;
+  background-color: #fcc;
+}
+#squirtle {
+  transition: 0.5s;
+  background-color: #ccf;
 }
