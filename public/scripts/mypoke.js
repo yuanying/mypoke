@@ -1,17 +1,22 @@
 function initialize() {
   var encounterIds = {};
   var latlng = new google.maps.LatLng(35.643757,139.826647);
+  var zoom = 18;
   if (localStorage) {
     var lat = parseFloat(localStorage.getItem('lat'));
     var lng = parseFloat(localStorage.getItem('lng'));
+    var _zoom = parseInt(localStorage.getItem('zoom'));
     if (lat && lng) {
       console.log('latlng');
       latlng = new google.maps.LatLng(lat,lng);
       console.log(latlng);
     }
+    if (_zoom) {
+      zoom = _zoom;
+    }
   }
   var opts = {
-    zoom: 18,
+    zoom: zoom,
     center: latlng,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -22,6 +27,11 @@ function initialize() {
       var center = map.getCenter();
       localStorage.setItem('lat', center.lat().toString());
       localStorage.setItem('lng', center.lng().toString());
+    }
+  });
+  map.addListener('zoom_changed', function() {
+    if(localStorage) {
+      localStorage.setItem('zoom', map.getZoom().toString());
     }
   });
   var circle = new google.maps.Circle({
