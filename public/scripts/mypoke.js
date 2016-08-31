@@ -3,16 +3,16 @@ function initialize() {
   var encounterIds = {};
   var latlng = new google.maps.LatLng(35.643757,139.826647);
   var zoom = 18;
-  var client = 'bulbasaur';
+  var current = 'bulbasaur';
   var clients = {
     'bulbasaur': {
-      'status': 'stop'
+      'status': null,
     },
     'charmander': {
-      'status': 'stop'
+      'status': null,
     },
     'squirtle': {
-      'status': 'stop'
+      'status': null,
     }
   }
   var circles = {
@@ -56,7 +56,7 @@ function initialize() {
       zoom = _zoom;
     }
     if (_client) {
-      client = _client;
+      current = _client;
     }
   }
   var opts = {
@@ -80,28 +80,35 @@ function initialize() {
   });
 
   var drawSearchButton = function() {
-    if (clients[client]['status'] == 'stop') {
-      $('#search').removeClass('blink');
-    } else {
-      $('#search').addClass('blink');
-    }
+    ['charmander', 'squirtle', 'bulbasaur'].forEach(function(value){
+      var client = clients[value];
+      var status = client['status'];
+      if (status) {
+        var node = $('#' + value);
+        node.removeClass('inactive');
+        if (status == 'stop') {
+          node.removeClass('blink');
+        } else {
+          node.addClass('blink');
+        }
+      }
+    });
   };
   var clientActive = function(active) {
     ['charmander', 'squirtle', 'bulbasaur'].forEach(function(value){
       if (value != active) {
-        $('#' + value).removeClass('active');
+        $('#' + value).removeClass('current');
       }
     });
-    $('#' + active).addClass('active');
-    client = active;
-    localStorage.setItem('client', client);
+    $('#' + active).addClass('current');
+    current = active;
+    localStorage.setItem('client', current);
     socket.emit('client', active);
-    drawSearchButton();
   };
-  clientActive(client);
+  clientActive(current);
 
   $('#search').click(function() {
-    if (clients[client]['status'] != 'stop') {
+    if (clients[current]['status'] != 'stop') {
       $('#search').removeClass('blink');
       socket.emit('search', null);
     } else {
@@ -138,14 +145,29 @@ function initialize() {
       );
     }
   });
+  var clientClick = function(client) {
+    if (client == current) {
+      client = clients[current];
+      if (client['status'] == 'stop') {
+        $('#' + current).addClass('blink');
+        var center = map.getCenter();
+        socket.emit('search', { latitude: center.lat(), longitude: center.lng() });
+      } else if (client) {
+        $('#' + current).removeClass('blink');
+        socket.emit('search', null);
+      }
+    } else {
+      clientActive(client);
+    }
+  };
   $('#bulbasaur').click(function() {
-    clientActive('charmander');
+    clientClick('bulbasaur');
   });
   $('#charmander').click(function() {
-    clientActive('squirtle');
+    clientClick('charmander');
   });
   $('#squirtle').click(function() {
-    clientActive('bulbasaur');
+    clientClick('squirtle');
   });
 
   setInterval(function() {

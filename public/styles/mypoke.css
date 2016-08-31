@@ -16,38 +16,94 @@ body {
   pointer-events: none;
 }
 
-#search {
+.client {
+  margin: 10px;
   /*border: 1px solid #f00;*/
   cursor: pointer;
   font-family: sans-serif;
   box-shadow: 0 0 4px rgba(0,0,0,0.4);
   background-color: #ffc;
-  width: 64px;
-  height: 64px;
-  border-radius: 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
   z-index: 1000;
   pointer-events: auto;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
-#search.blink {
-  animation: switchback 1s infinite alternate;
+#bulbasaur.blink {
+  animation: bulbasaur_switch 1s infinite alternate;
 }
-@keyframes switchback {
+@keyframes bulbasaur_switch {
   from {
     box-shadow: 0 0 4px rgba(0,0,0,0.4);
-    background-color: #fcc;
+    background-color: #9c9;
   }
   to {
     box-shadow: 0 0 6px rgba(0,0,0,1);
-    background-color: #f99;
+    background-color: #393;
   }
 }
+#charmander.blink {
+  animation: charmander_switch 1s infinite alternate;
+}
+@keyframes charmander_switch {
+  from {
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    background-color: #c99;
+  }
+  to {
+    box-shadow: 0 0 6px rgba(0,0,0,1);
+    background-color: #933;
+  }
+}
+#squirtle.blink {
+  animation: squirtle_switch 1s infinite alternate;
+}
+@keyframes squirtle_switch {
+  from {
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    background-color: #99c;
+  }
+  to {
+    box-shadow: 0 0 6px rgba(0,0,0,1);
+    background-color: #339;
+  }
+}
+#bulbasaur.client.inactive,
+#charmander.client.inactive,
+#squirtle.client.inactive {
+  cursor: default;
+  background-color: #999;
+}
+.client.current {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+}
+.client.current img {
+  width: 50px;
+  height: 50px;
+}
+#bulbasaur {
+  transition: 0.5s;
+  background-color: #cfc;
+}
+#charmander {
+  transition: 0.5s;
+  background-color: #fcc;
+}
+#squirtle {
+  transition: 0.5s;
+  background-color: #ccf;
+}
 
-#current,
-.client {
+#current {
   cursor: pointer;
   text-align: center;
-  z-index: 1001;
+  z-index: 999;
   position: absolute;
   right: 10px;
   width: 32px;
@@ -61,31 +117,10 @@ body {
 
 #current {
   top: 10px;
-  /*border: 2px solid #333;*/
   background-color: #fcc;
 }
 
 #current.active {
   transition: 0.5s;
   background-color: #999;
-}
-
-.client {
-  top: 52px;
-  display: none;
-}
-.client.active {
-  display: flex;
-}
-#bulbasaur {
-  transition: 0.5s;
-  background-color: #cfc;
-}
-#charmander {
-  transition: 0.5s;
-  background-color: #fcc;
-}
-#squirtle {
-  transition: 0.5s;
-  background-color: #ccf;
 }
